@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payslip Generator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        @media print {
+            body * {
+                visibility: hidden;
+            }
+            #payslip-container, #payslip-container * {
+                visibility: visible;
+            }
+            #payslip-container {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+            }
+            .no-print {
+                display: none;
+            }
+        }
+        .deduction-row:hover .remove-deduction {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+
+    <div class="container mx-auto p-4 sm:p-6 lg:p-8">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            
+            <!-- Input Form -->
+            <div class="lg:col-span-1 bg-white p-6 rounded-2xl shadow-lg no-print">
+                <h2 class="text-2xl font-bold text-gray-800 mb-6">Payslip Details</h2>
+
+                <div class="mt-8">
+                    <h3 class="text-lg font-semibold text-gray-700 mb-4 border-b pb-2">Employee Details</h3>
+                    <div class="space-y-4">
+                        <div>
+                            <label for="employeeName" class="block text-sm font-medium text-gray-600">Employee Name</label>
+                            <input type="text" id="employeeName" placeholder="" class="mt-1 block w-full bg-gray-50 border border-gray-300 rounded-lg shadow-sm py-2 px-3 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition duration-150">
+                        </div>
+                         <div>
+                            <label for="payPeriod" class="block text-sm font-medium text-gray-600">Pay Period</label>
+                            <input type="text" id="payPeriod" placeholder="e.g. Month Year" class="mt-1 block w-full bg-gray-50 border border-gray-300 rounded-lg shadow-sm py-2 px-3 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition duration-150">
+                        </div>
+                        <div>
+                            <label for="payDate" class="block text-sm font-medium text-gray-600">Pay Date</label>
+                            <input type="date" id="payDate" class="mt-1 block w-full bg-gray-50 border border-gray-300 rounded-lg shadow-sm py-2 px-3 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition duration-150">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-8">
+                    <h3 class="text-lg font-semibold text-gray-700 mb-4 border-b pb-2">Earnings</h3>
+                     <div class="space-y-4">
+                        <div>
+                            <label for="basicPay" class="block text-sm font-medium text-gray-600">Basic Pay (RM)</label>
+                            <input type="number" id="basicPay" placeholder="0.00" step="0.01" class="mt-1 block w-full bg-gray-50 border border-gray-300 rounded-lg shadow-sm py-2 px-3 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition duration-150">
+                        </div>
+                        <div>
+                            <label for="overtimePay" class="block text-sm font-medium text-gray-600">Overtime Pay (RM)</label>
+                            <input type="number" id="overtimePay" placeholder="0.00" step="0.01" class="mt-1 block w-full bg-gray-50 border border-gray-300 rounded-lg shadow-sm py-2 px-3 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition duration-150">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-8">
+                    <div class="flex justify-between items-center mb-4 border-b pb-2">
+                        <h3 class="text-lg font-semibold text-gray-700">Deductibles</h3>
+                        <button id="toggle-deductions" class="text-gray-500 hover:text-indigo-600" title="Toggle visibility in PDF">
+                           <svg id="eye-open" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-eye"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+                           <svg id="eye-closed" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-eye-off hidden"><path d="M9.88 9.88a3 3 0 1 0 4.24 4.24"/><path d="M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68"/><path d="M6.61 6.61A13.526 13.526 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61"/><line x1="2" x2="22" y1="2" y2="22"/></svg>
+                        </button>
+                    </div>
+                     <div id="deductions-list" class="space-y-3">
+                        <!-- Deduction items will be added here -->
+                     </div>
+                     <button id="add-deduction" class="mt-4 w-full bg-gray-200 hover:bg-gray-300 text-gray-700 font-semibold py-2 px-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-400 transition duration-150">
+                        + Add Deduction
+                    </button>
+                </div>
+
+                <div class="mt-8">
+                    <button id="generatePdf" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-4 rounded-lg shadow-lg focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-transform transform hover:scale-105 duration-300">
+                        Export as PDF
+                    </button>
+                </div>
+            </div>
+
+            <!-- Payslip Preview -->
+            <div class="lg:col-span-2">
+                <div id="payslip-container" class="bg-white p-8 rounded-2xl shadow-lg w-full">
+                    <div class="border-b-2 border-gray-200 pb-6 mb-6">
+                        <div class="flex justify-between items-start">
+                             <div>
+                                <h1 class="text-3xl font-bold text-gray-800">Payslip</h1>
+                            </div>
+                            <div class="text-right">
+                                <div class="flex justify-end mb-2">
+                                   <img src="image_5f1a71.png" alt="Company Logo" class="h-16 w-auto">
+                                </div>
+                                <h2 id="employerNamePreview" class="text-xl font-bold text-indigo-600">KKB Enterprise</h2>
+                                <p id="employerAddressPreview" class="text-gray-500 text-xs whitespace-pre-line">LOT 3127, FIRST FLOOR, 
+VISTA PERDANA COMMERCIAL CENTRE, 
+98000 MIRI, SARAWAK</p>
+                            </div>
+                        </div>
+                         <div class="mt-6 flex justify-between text-xs">
+                            <div>
+                                <span class="font-semibold text-gray-600">Pay Date:</span>
+                                <span id="payDatePreview" class="text-gray-800"></span>
+                            </div>
+                            <div>
+                                <span class="font-semibold text-gray-600">Pay Period:</span>
+                                <span id="payPeriodPreview" class="text-gray-800"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-8 mb-8">
+                        <div>
+                            <h3 class="text-base font-semibold text-gray-700 mb-2">Employee Details</h3>
+                            <p id="employeeNamePreview" class="text-gray-800 font-medium text-sm"></p>
+                        </div>
+                    </div>
+
+                    <div id="earnings-section-preview">
+                        <table class="w-full mb-4">
+                            <thead>
+                                <tr class="bg-gray-100">
+                                    <th class="text-left font-semibold text-gray-600 p-3 rounded-l-lg text-sm">Earnings</th>
+                                    <th class="text-right font-semibold text-gray-600 p-3 rounded-r-lg text-sm">Amount</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="border-b border-gray-200">
+                                    <td class="p-3 text-sm">Basic Pay</td>
+                                    <td id="basicPayPreview" class="text-right p-3 text-sm"></td>
+                                </tr>
+                                <tr class="border-b border-gray-200">
+                                    <td class="p-3 text-sm">Overtime Pay</td>
+                                    <td id="overtimePayPreview" class="text-right p-3 text-sm"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div id="deductions-section-preview" class="mb-8">
+                        <table class="w-full">
+                            <thead>
+                                <tr class="bg-gray-100">
+                                    <th class="text-left font-semibold text-gray-600 p-3 rounded-l-lg text-sm">Deductions</th>
+                                    <th class="text-right font-semibold text-gray-600 p-3 rounded-r-lg text-sm">Amount</th>
+                                </tr>
+                            </thead>
+                            <tbody id="deductions-tbody-preview">
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <div id="summary-section" class="mt-8 border-t-2 border-gray-200 pt-4">
+                        <table class="w-full">
+                            <tbody class="text-right">
+                                <tr class="font-medium text-sm">
+                                    <td class="p-2">Gross Pay:</td>
+                                    <td class="p-2" id="grossPayPreview"></td>
+                                </tr>
+                                <tr class="font-medium text-sm">
+                                    <td class="p-2">Total Deductions:</td>
+                                    <td class="p-2" id="totalDeductionsPreview"></td>
+                                </tr>
+                                <tr class="font-bold text-base text-indigo-600">
+                                    <td class="p-2">Net Pay:</td>
+                                    <td class="p-2" id="netPayPreview"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="border-t-2 border-gray-200 pt-6 mt-6 text-gray-600">
+                        <h3 class="text-sm font-semibold text-gray-700 mb-2">Payment Details</h3>
+                        <p class="text-xs">Payment made to employee's bank account.</p>
+                    </div>
+
+                    <div class="mt-8 text-center text-xs text-gray-400">
+                        <p>This is a system generated payslip.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const { jsPDF } = window.jspdf;
+        let deductionsVisible = true;
+
+        // Input elements
+        const employeeNameInput = document.getElementById('employeeName');
+        const payPeriodInput = document.getElementById('payPeriod');
+        const payDateInput = document.getElementById('payDate');
+        const basicPayInput = document.getElementById('basicPay');
+        const overtimePayInput = document.getElementById('overtimePay');
+
+        // Preview elements
+        const employeeNamePreview = document.getElementById('employeeNamePreview');
+        const payPeriodPreview = document.getElementById('payPeriodPreview');
+        const payDatePreview = document.getElementById('payDatePreview');
+        const basicPayPreview = document.getElementById('basicPayPreview');
+        const overtimePayPreview = document.getElementById('overtimePayPreview');
+        const grossPayPreview = document.getElementById('grossPayPreview');
+        const totalDeductionsPreview = document.getElementById('totalDeductionsPreview');
+        const netPayPreview = document.getElementById('netPayPreview');
+        const deductionsTbodyPreview = document.getElementById('deductions-tbody-preview');
+        const deductionsSectionPreview = document.getElementById('deductions-section-preview');
+
+        // Deductions elements
+        const addDeductionBtn = document.getElementById('add-deduction');
+        const deductionsList = document.getElementById('deductions-list');
+        const toggleDeductionsBtn = document.getElementById('toggle-deductions');
+        const eyeOpenIcon = document.getElementById('eye-open');
+        const eyeClosedIcon = document.getElementById('eye-closed');
+
+        function formatCurrency(amount) {
+            return `RM ${parseFloat(amount).toFixed(2)}`;
+        }
+        
+        function formatDate(dateString) {
+            if (!dateString) return '';
+            const date = new Date(dateString);
+            const day = String(date.getDate()).padStart(2, '0');
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const year = date.getFullYear();
+            return `${day}/${month}/${year}`;
+        }
+
+        function updatePreview() {
+            // Static details
+            employeeNamePreview.textContent = employeeNameInput.value;
+            payPeriodPreview.textContent = payPeriodInput.value;
+            payDatePreview.textContent = formatDate(payDateInput.value);
+
+            // Earnings calculation
+            const basicPay = parseFloat(basicPayInput.value) || 0;
+            const overtimePay = parseFloat(overtimePayInput.value) || 0;
+            const grossPay = basicPay + overtimePay;
+
+            basicPayPreview.textContent = formatCurrency(basicPay);
+            overtimePayPreview.textContent = formatCurrency(overtimePay);
+            grossPayPreview.textContent = formatCurrency(grossPay);
+
+            // Deductions calculation
+            let totalDeductions = 0;
+            deductionsTbodyPreview.innerHTML = '';
+            const deductionRows = deductionsList.querySelectorAll('.deduction-row');
+            
+            deductionRows.forEach(row => {
+                const title = row.querySelector('.deduction-title').value || 'Untitled Deduction';
+                const amount = parseFloat(row.querySelector('.deduction-amount').value) || 0;
+                totalDeductions += amount;
+
+                const tr = document.createElement('tr');
+                tr.className = 'border-b border-gray-200';
+                tr.innerHTML = `
+                    <td class="p-3 text-sm">${title}</td>
+                    <td class="text-right p-3 text-sm">${formatCurrency(amount)}</td>
+                `;
+                deductionsTbodyPreview.appendChild(tr);
+            });
+
+            // Summary
+            const netPay = grossPay - totalDeductions;
+            totalDeductionsPreview.textContent = formatCurrency(totalDeductions);
+            netPayPreview.textContent = formatCurrency(netPay);
+            
+            // Toggle visibility of deductions section in preview
+            const hasDeductions = deductionRows.length > 0;
+            if (deductionsVisible && hasDeductions) {
+                deductionsSectionPreview.classList.remove('hidden');
+            } else {
+                deductionsSectionPreview.classList.add('hidden');
+            }
+        }
+        
+        function addDeductionRow() {
+            const row = document.createElement('div');
+            row.className = 'deduction-row flex items-center gap-2';
+            row.innerHTML = `
+                <input type="text" placeholder="Deduction Title" class="deduction-title mt-1 block w-full bg-gray-50 border border-gray-300 rounded-lg shadow-sm py-2 px-3 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition duration-150">
+                <input type="number" placeholder="0.00" step="0.01" class="deduction-amount mt-1 block w-2/3 bg-gray-50 border border-gray-300 rounded-lg shadow-sm py-2 px-3 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition duration-150">
+                <button class="remove-deduction text-red-500 hover:text-red-700 opacity-25 transition-opacity">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-trash-2"><path d="M3 6h18"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><line x1="10" x2="10" y1="11" y2="17"/><line x1="14" x2="14" y1="11" y2="17"/></svg>
+                </button>
+            `;
+            deductionsList.appendChild(row);
+            row.querySelector('.remove-deduction').addEventListener('click', () => {
+                row.remove();
+                updatePreview();
+            });
+            row.querySelectorAll('input').forEach(input => input.addEventListener('input', updatePreview));
+            updatePreview();
+        }
+
+        // Event Listeners
+        [employeeNameInput, payPeriodInput, payDateInput, basicPayInput, overtimePayInput].forEach(input => {
+            input.addEventListener('input', updatePreview);
+        });
+        
+        addDeductionBtn.addEventListener('click', addDeductionRow);
+
+        toggleDeductionsBtn.addEventListener('click', () => {
+            deductionsVisible = !deductionsVisible;
+            eyeOpenIcon.classList.toggle('hidden');
+            eyeClosedIcon.classList.toggle('hidden');
+            updatePreview();
+        });
+        
+        document.addEventListener('DOMContentLoaded', updatePreview);
+
+        // PDF Generation
+        document.getElementById('generatePdf').addEventListener('click', () => {
+            updatePreview(); // Ensure preview is up-to-date before generating
+            const payslipElement = document.getElementById('payslip-container');
+            
+            payslipElement.classList.add('shadow-none');
+            
+            html2canvas(payslipElement, { scale: 2 }).then(canvas => {
+                payslipElement.classList.remove('shadow-none');
+
+                const imgData = canvas.toDataURL('image/png');
+                const pdf = new jsPDF({ orientation: 'portrait', unit: 'pt', format: 'a4' });
+                const pdfWidth = pdf.internal.pageSize.getWidth();
+                const canvasWidth = canvas.width;
+                const canvasHeight = canvas.height;
+                const ratio = canvasHeight / canvasWidth;
+                
+                const width = pdfWidth - 40; // with some margin
+                const height = width * ratio;
+                let y = 20;
+
+                pdf.addImage(imgData, 'PNG', 20, y, width, height);
+                pdf.save(`Payslip-${employeeNameInput.value.replace(/\s/g, '_') || 'employee'}-${payPeriodInput.value || 'period'}.pdf`);
+            });
+        });
+    </script>
+</body>
+</html>
+
+
+
