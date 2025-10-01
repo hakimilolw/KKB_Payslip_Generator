@@ -100,7 +100,7 @@
             </div>
 
             <div class="lg:col-span-2">
-                 <div id="payslip-container" class="bg-white p-4 sm:p-6 lg:p-8 rounded-2xl shadow-lg w-full">
+                <div id="payslip-container" class="bg-white p-4 sm:p-6 lg:p-8 rounded-2xl shadow-lg w-full">
                     <div class="border-b-2 border-gray-200 pb-6 mb-6">
                         <div class="flex justify-between items-start">
                             <div>
@@ -205,17 +205,14 @@ VISTA PERDANA COMMERCIAL CENTRE,
         const { jsPDF } = window.jspdf;
         let deductionsVisible = true;
 
-        // Input elements
         const employeeNameInput = document.getElementById('employeeName');
         const payPeriodInput = document.getElementById('payPeriod');
         const payDateInput = document.getElementById('payDate');
         const basicPayInput = document.getElementById('basicPay');
         const overtimePayInput = document.getElementById('overtimePay');
         const generatePdfBtn = document.getElementById('generatePdf');
-        const iosHelper = document.getElementById('ios-helper'); // iOS helper message div
+        const iosHelper = document.getElementById('ios-helper');
 
-
-        // Preview elements
         const employeeNamePreview = document.getElementById('employeeNamePreview');
         const payPeriodPreview = document.getElementById('payPeriodPreview');
         const payDatePreview = document.getElementById('payDatePreview');
@@ -227,7 +224,6 @@ VISTA PERDANA COMMERCIAL CENTRE,
         const deductionsTbodyPreview = document.getElementById('deductions-tbody-preview');
         const deductionsSectionPreview = document.getElementById('deductions-section-preview');
 
-        // Deductions elements
         const addDeductionBtn = document.getElementById('add-deduction');
         const deductionsList = document.getElementById('deductions-list');
         const toggleDeductionsBtn = document.getElementById('toggle-deductions');
@@ -235,7 +231,7 @@ VISTA PERDANA COMMERCIAL CENTRE,
         const eyeClosedIcon = document.getElementById('eye-closed');
 
         function formatCurrency(amount) {
-            return `RM ${parseFloat(amount).toFixed(2)}`;
+            return `RM ${parseFloat(amount || 0).toFixed(2)}`;
         }
         
         function formatDate(dateString) {
@@ -247,14 +243,11 @@ VISTA PERDANA COMMERCIAL CENTRE,
             return `${day}/${month}/${year}`;
         }
 
-
         function updatePreview() {
-            // Static details
             employeeNamePreview.textContent = employeeNameInput.value || 'Employee Name';
             payPeriodPreview.textContent = payPeriodInput.value || 'N/A';
             payDatePreview.textContent = formatDate(payDateInput.value) || 'N/A';
 
-            // Earnings calculation
             const basicPay = parseFloat(basicPayInput.value) || 0;
             const overtimePay = parseFloat(overtimePayInput.value) || 0;
             const grossPay = basicPay + overtimePay;
@@ -263,7 +256,6 @@ VISTA PERDANA COMMERCIAL CENTRE,
             overtimePayPreview.textContent = formatCurrency(overtimePay);
             grossPayPreview.textContent = formatCurrency(grossPay);
 
-            // Deductions calculation
             let totalDeductions = 0;
             deductionsTbodyPreview.innerHTML = '';
             const deductionRows = deductionsList.querySelectorAll('.deduction-row');
@@ -275,24 +267,18 @@ VISTA PERDANA COMMERCIAL CENTRE,
 
                 const tr = document.createElement('tr');
                 tr.className = 'border-b border-gray-200';
-                tr.innerHTML = `
-                    <td class="p-3 text-sm">${title}</td>
-                    <td class="text-right p-3 text-sm">${formatCurrency(amount)}</td>
-                `;
+                tr.innerHTML = `<td class="p-3 text-sm">${title}</td><td class="text-right p-3 text-sm">${formatCurrency(amount)}</td>`;
                 deductionsTbodyPreview.appendChild(tr);
             });
 
-            // Summary
             const netPay = grossPay - totalDeductions;
             totalDeductionsPreview.textContent = formatCurrency(totalDeductions);
             netPayPreview.textContent = formatCurrency(netPay);
             
-            // Toggle visibility of deductions section in preview
             const hasDeductions = deductionRows.length > 0;
             if (deductionsVisible && hasDeductions) {
                 deductionsSectionPreview.classList.remove('hidden');
                 totalDeductionsPreview.parentElement.classList.remove('hidden');
-
             } else {
                 deductionsSectionPreview.classList.add('hidden');
                 totalDeductionsPreview.parentElement.classList.add('hidden');
@@ -302,13 +288,7 @@ VISTA PERDANA COMMERCIAL CENTRE,
         function addDeductionRow() {
             const row = document.createElement('div');
             row.className = 'deduction-row flex items-center gap-2';
-            row.innerHTML = `
-                <input type="text" placeholder="Deduction Title" class="deduction-title mt-1 block w-full flex-grow bg-gray-50 border border-gray-300 rounded-lg shadow-sm py-2 px-3 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition duration-150">
-                <input type="number" placeholder="0.00" step="0.01" class="deduction-amount mt-1 block w-28 bg-gray-50 border border-gray-300 rounded-lg shadow-sm py-2 px-3 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition duration-150">
-                <button class="remove-deduction text-red-500 hover:text-red-700 opacity-25 transition-opacity">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-trash-2"><path d="M3 6h18"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><line x1="10" x2="10" y1="11" y2="17"/><line x1="14" x2="14" y1="11" y2="17"/></svg>
-                </button>
-            `;
+            row.innerHTML = `<input type="text" placeholder="Deduction Title" class="deduction-title mt-1 block w-full flex-grow bg-gray-50 border border-gray-300 rounded-lg shadow-sm py-2 px-3 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition duration-150"><input type="number" placeholder="0.00" step="0.01" class="deduction-amount mt-1 block w-28 bg-gray-50 border border-gray-300 rounded-lg shadow-sm py-2 px-3 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition duration-150"><button class="remove-deduction text-red-500 hover:text-red-700 opacity-25 transition-opacity"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-trash-2"><path d="M3 6h18"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><line x1="10" x2="10" y1="11" y2="17"/><line x1="14" x2="14" y1="11" y2="17"/></svg></button>`;
             deductionsList.appendChild(row);
             row.querySelector('.remove-deduction').addEventListener('click', () => {
                 row.remove();
@@ -318,27 +298,12 @@ VISTA PERDANA COMMERCIAL CENTRE,
             updatePreview();
         }
 
-        // FIX 2: Helper function to detect iOS
         function isIOS() {
-            return [
-                'iPad Simulator',
-                'iPhone Simulator',
-                'iPod Simulator',
-                'iPad',
-                'iPhone',
-                'iPod'
-            ].includes(navigator.platform)
-            // iPad on iOS 13 detection
-            || (navigator.userAgent.includes("Mac") && "ontouchend" in document)
+            return ['iPad Simulator', 'iPhone Simulator', 'iPod Simulator', 'iPad', 'iPhone', 'iPod'].includes(navigator.platform) || (navigator.userAgent.includes("Mac") && "ontouchend" in document);
         }
 
-        // Event Listeners
-        [employeeNameInput, payPeriodInput, payDateInput, basicPayInput, overtimePayInput].forEach(input => {
-            input.addEventListener('input', updatePreview);
-        });
-        
+        [employeeNameInput, payPeriodInput, payDateInput, basicPayInput, overtimePayInput].forEach(input => input.addEventListener('input', updatePreview));
         addDeductionBtn.addEventListener('click', addDeductionRow);
-
         toggleDeductionsBtn.addEventListener('click', () => {
             deductionsVisible = !deductionsVisible;
             eyeOpenIcon.classList.toggle('hidden');
@@ -347,21 +312,16 @@ VISTA PERDANA COMMERCIAL CENTRE,
         });
         
         document.addEventListener('DOMContentLoaded', () => {
-            // Set default date to today, considering the timezone
             const today = new Date();
             const offset = today.getTimezoneOffset();
             const localToday = new Date(today.getTime() - (offset*60*1000));
             payDateInput.value = localToday.toISOString().split('T')[0];
-
-            // Set default pay period to current month and year
             const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
             payPeriodInput.value = `${monthNames[today.getMonth()]} ${today.getFullYear()}`;
-            
             updatePreview();
         });
 
         generatePdfBtn.addEventListener('click', () => {
-            // Hide the helper message before generating a new PDF
             iosHelper.classList.add('hidden');
             updatePreview(); 
             
@@ -370,25 +330,29 @@ VISTA PERDANA COMMERCIAL CENTRE,
 
             generatePdfBtn.disabled = true;
             generatePdfBtn.innerHTML = 'Exporting...';
-
-            payslipElement.classList.add('shadow-none');
             
-            html2canvas(payslipElement, { scale: 2, useCORS: true }).then(canvas => {
-                payslipElement.classList.remove('shadow-none');
+            // ==========================================================
+            // === THE FIX: Use fixed width for canvas generation ===
+            // ==========================================================
+            const canvasOptions = { 
+                scale: 2, 
+                useCORS: true, 
+                width: 800,       // Force width to ensure full capture
+                windowWidth: 800  // Tell html2canvas the "window" is this wide
+            };
 
+            html2canvas(payslipElement, canvasOptions).then(canvas => {
                 const imgData = canvas.toDataURL('image/png');
                 const pdf = new jsPDF({ orientation: 'portrait', unit: 'pt', format: 'a4' });
                 const pdfWidth = pdf.internal.pageSize.getWidth();
-                const pdfHeight = pdf.internal.pageSize.getHeight();
                 const canvasWidth = canvas.width;
                 const canvasHeight = canvas.height;
                 const ratio = canvasHeight / canvasWidth;
                 
-                const width = pdfWidth - 40; 
-                const height = width * ratio;
-                let y = 20;
+                const widthInPdf = pdfWidth - 40; 
+                const heightInPdf = widthInPdf * ratio;
 
-                pdf.addImage(imgData, 'PNG', 20, y, width, height);
+                pdf.addImage(imgData, 'PNG', 20, 20, widthInPdf, heightInPdf);
 
                 const pdfBlob = pdf.output('blob');
                 const downloadLink = document.createElement('a');
@@ -401,7 +365,6 @@ VISTA PERDANA COMMERCIAL CENTRE,
                 downloadLink.click();
                 document.body.removeChild(downloadLink);
                 
-                // FIX 2: If on iOS, show the helper message
                 if (isIOS()) {
                     iosHelper.classList.remove('hidden');
                 }
