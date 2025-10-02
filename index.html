@@ -29,9 +29,6 @@
                 display: none;
             }
         }
-        .deduction-row:hover .remove-deduction {
-            opacity: 1;
-        }
     </style>
 </head>
 <body class="bg-gray-100">
@@ -42,51 +39,76 @@
             <div class="lg:col-span-1 bg-white p-4 sm:p-6 rounded-2xl shadow-lg no-print">
                 <h2 class="text-2xl font-bold text-gray-800 mb-6">Payslip Details</h2>
 
-                <div class="mt-8">
-                    <h3 class="text-lg font-semibold text-gray-700 mb-4 border-b pb-2">Employee Details</h3>
-                    <div class="space-y-4">
-                        <div>
-                            <label for="employeeName" class="block text-sm font-medium text-gray-600">Employee Name</label>
-                            <input type="text" id="employeeName" placeholder="e.g. John Doe" class="mt-1 block w-full bg-gray-50 border border-gray-300 rounded-lg shadow-sm py-2 px-3 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition duration-150">
-                        </div>
-                         <div>
-                            <label for="payPeriod" class="block text-sm font-medium text-gray-600">Pay Period</label>
-                            <input type="text" id="payPeriod" placeholder="e.g. October 2025" class="mt-1 block w-full bg-gray-50 border border-gray-300 rounded-lg shadow-sm py-2 px-3 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition duration-150">
-                        </div>
-                        <div>
-                            <label for="payDate" class="block text-sm font-medium text-gray-600">Pay Date</label>
-                            <input type="date" id="payDate" class="mt-1 block w-full bg-gray-50 border border-gray-300 rounded-lg shadow-sm py-2 px-3 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition duration-150">
+                <div class="space-y-6">
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-700 mb-4 border-b pb-2">General Details</h3>
+                        <div class="space-y-4">
+                            <div>
+                                <label for="payPeriod" class="block text-sm font-medium text-gray-600">Pay Period</label>
+                                <input type="text" id="payPeriod" placeholder="e.g. April 2025" class="mt-1 block w-full bg-gray-50 border border-gray-300 rounded-lg shadow-sm py-2 px-3 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <div class="mt-8">
-                    <h3 class="text-lg font-semibold text-gray-700 mb-4 border-b pb-2">Earnings</h3>
-                     <div class="space-y-4">
-                        <div>
-                            <label for="basicPay" class="block text-sm font-medium text-gray-600">Basic Pay (RM)</label>
-                            <input type="number" id="basicPay" placeholder="0.00" step="0.01" class="mt-1 block w-full bg-gray-50 border border-gray-300 rounded-lg shadow-sm py-2 px-3 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition duration-150">
-                        </div>
-                        <div>
-                            <label for="overtimePay" class="block text-sm font-medium text-gray-600">Overtime Pay (RM)</label>
-                            <input type="number" id="overtimePay" placeholder="0.00" step="0.01" class="mt-1 block w-full bg-gray-50 border border-gray-300 rounded-lg shadow-sm py-2 px-3 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition duration-150">
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-700 mb-4 border-b pb-2">Employee Details</h3>
+                        <div class="space-y-4">
+                            <div>
+                                <label for="employeeName" class="block text-sm font-medium text-gray-600">Employee Name (Nama Pekerja)</label>
+                                <input type="text" id="employeeName" placeholder="e.g. Mohd Aqif Bin Ahmad Fauzi" class="mt-1 block w-full bg-gray-50 border border-gray-300 rounded-lg shadow-sm py-2 px-3 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                            </div>
+                            <div>
+                                <label for="nric" class="block text-sm font-medium text-gray-600">NRIC</label>
+                                <input type="text" id="nric" placeholder="e.g. 990919-13-6057" class="mt-1 block w-full bg-gray-50 border border-gray-300 rounded-lg shadow-sm py-2 px-3 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                            </div>
+                             <div>
+                                <label for="position" class="block text-sm font-medium text-gray-600">Position (Jawatan)</label>
+                                <input type="text" id="position" placeholder="e.g. Manager" class="mt-1 block w-full bg-gray-50 border border-gray-300 rounded-lg shadow-sm py-2 px-3 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <div class="mt-8">
-                    <div class="flex justify-between items-center mb-4 border-b pb-2">
-                        <h3 class="text-lg font-semibold text-gray-700">Deductibles</h3>
-                        <button id="toggle-deductions" class="text-gray-500 hover:text-indigo-600" title="Toggle visibility in PDF">
-                           <svg id="eye-open" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-eye"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
-                           <svg id="eye-closed" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-eye-off hidden"><path d="M9.88 9.88a3 3 0 1 0 4.24 4.24"/><path d="M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68"/><path d="M6.61 6.61A13.526 13.526 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61"/><line x1="2" x2="22" y1="2" y2="22"/></svg>
-                        </button>
+                    <div>
+                         <h3 class="text-lg font-semibold text-gray-700 mb-4 border-b pb-2">Earnings (Pendapatan)</h3>
+                         <div class="grid grid-cols-2 gap-4">
+                            <div><label for="gajiAsas" class="block text-sm font-medium text-gray-600">Gaji Asas</label><input type="number" id="gajiAsas" placeholder="0.00" step="0.01" class="mt-1 block w-full bg-gray-50 border rounded-lg py-2 px-3"></div>
+                            <div><label for="tunggakan" class="block text-sm font-medium text-gray-600">Tunggakan</label><input type="number" id="tunggakan" placeholder="0.00" step="0.01" class="mt-1 block w-full bg-gray-50 border rounded-lg py-2 px-3"></div>
+                            <div><label for="elaunTetap" class="block text-sm font-medium text-gray-600">Elaun Tetap</label><input type="number" id="elaunTetap" placeholder="0.00" step="0.01" class="mt-1 block w-full bg-gray-50 border rounded-lg py-2 px-3"></div>
+                            <div><label for="elaunTidakTetap" class="block text-sm font-medium text-gray-600">Elaun T.Tetap</label><input type="number" id="elaunTidakTetap" placeholder="0.00" step="0.01" class="mt-1 block w-full bg-gray-50 border rounded-lg py-2 px-3"></div>
+                            <div><label for="overtime" class="block text-sm font-medium text-gray-600">Overtime (OT)</label><input type="number" id="overtime" placeholder="0.00" step="0.01" class="mt-1 block w-full bg-gray-50 border rounded-lg py-2 px-3"></div>
+                            <div><label for="tuntutan" class="block text-sm font-medium text-gray-600">Tuntutan</label><input type="number" id="tuntutan" placeholder="0.00" step="0.01" class="mt-1 block w-full bg-gray-50 border rounded-lg py-2 px-3"></div>
+                            <div><label for="komisyen" class="block text-sm font-medium text-gray-600">Komisyen</label><input type="number" id="komisyen" placeholder="0.00" step="0.01" class="mt-1 block w-full bg-gray-50 border rounded-lg py-2 px-3"></div>
+                            <div><label for="bonus" class="block text-sm font-medium text-gray-600">Bonus</label><input type="number" id="bonus" placeholder="0.00" step="0.01" class="mt-1 block w-full bg-gray-50 border rounded-lg py-2 px-3"></div>
+                         </div>
                     </div>
-                      <div id="deductions-list" class="space-y-3">
-                        </div>
-                      <button id="add-deduction" class="mt-4 w-full bg-gray-200 hover:bg-gray-300 text-gray-700 font-semibold py-2 px-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-400 transition duration-150">
-                        + Add Deduction
-                    </button>
+
+                    <div>
+                         <h3 class="text-lg font-semibold text-gray-700 mb-4 border-b pb-2">Deductions (Penolakan)</h3>
+                         <div class="grid grid-cols-2 gap-4">
+                            <div><label for="kwspPekerja" class="block text-sm font-medium text-gray-600">KWSP Pekerja</label><input type="number" id="kwspPekerja" placeholder="0.00" step="0.01" class="mt-1 block w-full bg-gray-50 border rounded-lg py-2 px-3"></div>
+                            <div><label for="perkesoPekerja" class="block text-sm font-medium text-gray-600">PERKESO Pekerja</label><input type="number" id="perkesoPekerja" placeholder="0.00" step="0.01" class="mt-1 block w-full bg-gray-50 border rounded-lg py-2 px-3"></div>
+                            <div><label for="sipPekerja" class="block text-sm font-medium text-gray-600">SIP Pekerja</label><input type="number" id="sipPekerja" placeholder="0.00" step="0.01" class="mt-1 block w-full bg-gray-50 border rounded-lg py-2 px-3"></div>
+                            <div><label for="unpaidLeave" class="block text-sm font-medium text-gray-600">Cuti Tanpa Gaji</label><input type="number" id="unpaidLeave" placeholder="0.00" step="0.01" class="mt-1 block w-full bg-gray-50 border rounded-lg py-2 px-3"></div>
+                            <div><label for="pendahuluan" class="block text-sm font-medium text-gray-600">Pendahuluan</label><input type="number" id="pendahuluan" placeholder="0.00" step="0.01" class="mt-1 block w-full bg-gray-50 border rounded-lg py-2 px-3"></div>
+                            <div><label for="others" class="block text-sm font-medium text-gray-600">Others</label><input type="number" id="others" placeholder="0.00" step="0.01" class="mt-1 block w-full bg-gray-50 border rounded-lg py-2 px-3"></div>
+                         </div>
+                    </div>
+
+                    <div>
+                         <h3 class="text-lg font-semibold text-gray-700 mb-4 border-b pb-2">Employer Contributions (Caruman Majikan)</h3>
+                         <div class="grid grid-cols-2 gap-4">
+                            <div><label for="kwspMajikan" class="block text-sm font-medium text-gray-600">KWSP Majikan</label><input type="number" id="kwspMajikan" placeholder="0.00" step="0.01" class="mt-1 block w-full bg-gray-50 border rounded-lg py-2 px-3"></div>
+                            <div><label for="perkesoMajikan" class="block text-sm font-medium text-gray-600">PERKESO Majikan</label><input type="number" id="perkesoMajikan" placeholder="0.00" step="0.01" class="mt-1 block w-full bg-gray-50 border rounded-lg py-2 px-3"></div>
+                            <div><label for="sipMajikan" class="block text-sm font-medium text-gray-600">SIP Majikan</label><input type="number" id="sipMajikan" placeholder="0.00" step="0.01" class="mt-1 block w-full bg-gray-50 border rounded-lg py-2 px-3"></div>
+                            <div><label for="psmbMajikan" class="block text-sm font-medium text-gray-600">PSMB Majikan</label><input type="number" id="psmbMajikan" placeholder="0.00" step="0.01" class="mt-1 block w-full bg-gray-50 border rounded-lg py-2 px-3"></div>
+                         </div>
+                         <div class="grid grid-cols-2 gap-4 mt-4">
+                             <div><label for="kwspNo" class="block text-sm font-medium text-gray-600">No. KWSP</label><input type="text" id="kwspNo" class="mt-1 block w-full bg-gray-50 border rounded-lg py-2 px-3"></div>
+                             <div><label for="sipNo" class="block text-sm font-medium text-gray-600">No. SIP</label><input type="text" id="sipNo" class="mt-1 block w-full bg-gray-50 border rounded-lg py-2 px-3"></div>
+                             <div><label for="perkesoNo" class="block text-sm font-medium text-gray-600">No. PERKESO</label><input type="text" id="perkesoNo" class="mt-1 block w-full bg-gray-50 border rounded-lg py-2 px-3"></div>
+                             <div><label for="psmbNo" class="block text-sm font-medium text-gray-600">No. PSMB</label><input type="text" id="psmbNo" class="mt-1 block w-full bg-gray-50 border rounded-lg py-2 px-3"></div>
+                         </div>
+                    </div>
                 </div>
 
                 <div class="mt-8">
@@ -94,98 +116,100 @@
                         Export as PDF
                     </button>
                     <div id="ios-helper" class="hidden mt-3 text-center text-xs text-gray-600 bg-gray-100 p-2 rounded-lg">
-                        <b>On iOS?</b> Tap the "Share" icon <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIGNsYXNzPSJsdWNpZGUgbHVjaWRlLXNoYXJlIj48cGF0aCBkPSJNNCAxMiBsOCA4IDgtOCIvPjxwYXRoIGQ9Ik0xMiA0djE2Ii8+PC9zdmc+" alt="Share Icon" class="inline h-4 w-4 align-text-bottom"> in the new tab and choose "Save to Files" to download your PDF.
+                        <b>On iOS?</b> Tap the "Share" icon <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIGNsYXNzPSJsdWNpZGUgbHVjaWRlLXNoYXJlIj48cGF0aCBkPSJNNCAxMiBsOCA4IDgtOCIvPjxwYXRoIGQ9Ik0xMiA0djE6Ii8+PC9zdmc+" alt="Share Icon" class="inline h-4 w-4 align-text-bottom"> in the new tab and choose "Save to Files" to download your PDF.
                     </div>
                 </div>
             </div>
 
             <div class="lg:col-span-2">
-                <div id="payslip-container" class="bg-white p-4 sm:p-6 lg:p-8 rounded-2xl shadow-lg w-full">
-                    <div class="border-b-2 border-gray-200 pb-6 mb-6">
+                <div id="payslip-container" class="bg-white p-4 sm:p-6 lg:p-8 rounded-2xl shadow-lg w-full text-sm">
+                    <div class="border-b-2 border-gray-100 pb-4 mb-4">
                         <div class="flex justify-between items-start">
                             <div>
-                                <h1 class="text-3xl font-bold text-gray-800">Payslip</h1>
-                           </div>
+                                 <h1 class="text-3xl font-bold text-gray-800">Payslip</h1>
+                            </div>
                             <div class="text-right">
                                 <div class="flex justify-end mb-2">
-                                   <img src="logo.png" alt="Company Logo" class="h-16 w-auto">
+                                    <img src="logo.png" alt="Company Logo" class="h-16 w-auto">
                                 </div>
-                                <h2 id="employerNamePreview" class="text-xl font-bold text-indigo-600">KKB Enterprise</h2>
-                                <p id="employerAddressPreview" class="text-gray-500 text-xs whitespace-pre-line">LOT 3127, FIRST FLOOR, 
+                                <h2 class="text-xl font-bold text-indigo-600">KKB Enterprise</h2>
+                                <p class="text-gray-500 text-xs whitespace-pre-line">LOT 3127, FIRST FLOOR, 
 VISTA PERDANA COMMERCIAL CENTRE, 
 98000 MIRI, SARAWAK</p>
                             </div>
                         </div>
-                         <div class="mt-6 flex justify-between text-xs">
-                            <div>
-                                <span class="font-semibold text-gray-600">Pay Date:</span>
-                                <span id="payDatePreview" class="text-gray-800"></span>
-                            </div>
-                            <div>
-                                <span class="font-semibold text-gray-600">Pay Period:</span>
-                                <span id="payPeriodPreview" class="text-gray-800"></span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-8 mb-8">
-                        <div>
-                            <h3 class="text-base font-semibold text-gray-700 mb-2">Employee Details</h3>
-                            <p id="employeeNamePreview" class="text-gray-800 font-medium text-sm"></p>
-                        </div>
-                    </div>
-
-                    <div id="earnings-section-preview">
-                        <table class="w-full mb-4">
-                            <thead>
-                                <tr class="bg-gray-100">
-                                    <th class="text-left font-semibold text-gray-600 p-3 rounded-l-lg text-sm">Earnings</th>
-                                    <th class="text-right font-semibold text-gray-600 p-3 rounded-r-lg text-sm">Amount</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr class="border-b border-gray-200">
-                                    <td class="p-3 text-sm">Basic Pay</td>
-                                    <td id="basicPayPreview" class="text-right p-3 text-sm"></td>
-                                </tr>
-                                <tr class="border-b border-gray-200">
-                                    <td class="p-3 text-sm">Overtime Pay</td>
-                                    <td id="overtimePayPreview" class="text-right p-3 text-sm"></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-
-                    <div id="deductions-section-preview" class="mb-8">
-                        <table class="w-full">
-                            <thead>
-                                <tr class="bg-gray-100">
-                                    <th class="text-left font-semibold text-gray-600 p-3 rounded-l-lg text-sm">Deductions</th>
-                                    <th class="text-right font-semibold text-gray-600 p-3 rounded-r-lg text-sm">Amount</th>
-                                </tr>
-                            </thead>
-                            <tbody id="deductions-tbody-preview">
-                            </tbody>
-                        </table>
                     </div>
                     
-                    <div id="summary-section" class="mt-8 border-t-2 border-gray-200 pt-4">
-                        <table class="w-full">
-                            <tbody class="text-right">
-                                <tr class="font-medium text-sm">
-                                    <td class="p-2">Gross Pay:</td>
-                                    <td class="p-2" id="grossPayPreview"></td>
-                                </tr>
-                                <tr class="font-medium text-sm">
-                                    <td class="p-2">Total Deductions:</td>
-                                    <td class="p-2" id="totalDeductionsPreview"></td>
-                                </tr>
-                                <tr class="font-bold text-base text-indigo-600">
-                                    <td class="p-2">Net Pay:</td>
-                                    <td class="p-2" id="netPayPreview"></td>
-                                </tr>
-                            </tbody>
-                        </table>
+                    <div class="bg-yellow-300 p-2 my-4 text-center font-semibold">
+                        Slip gaji bagi tempoh: <span id="payPeriodPreview"></span>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-4 mb-4">
+                        <div>
+                            <span class="font-semibold">Nama Pekerja :</span>
+                            <span id="employeeNamePreview"></span>
+                        </div>
+                        <div>
+                            <span class="font-semibold">Jawatan :</span>
+                            <span id="positionPreview"></span>
+                        </div>
+                        <div>
+                            <span class="font-semibold">NRIC :</span>
+                            <span id="nricPreview"></span>
+                        </div>
+                    </div>
+
+                    <hr class="my-4">
+
+                    <div class="grid grid-cols-2 gap-8">
+                        <div>
+                            <h3 class="font-bold underline mb-2">Pendapatan:</h3>
+                            <div class="space-y-1">
+                                <div class="flex justify-between"><span>Gaji Asas</span><span id="gajiAsasPreview">0.00</span></div>
+                                <div class="flex justify-between"><span>Tunggakan</span><span id="tunggakanPreview">0.00</span></div>
+                                <div class="flex justify-between"><span>Total Elaun Tetap</span><span id="elaunTetapPreview">0.00</span></div>
+                                <div class="flex justify-between"><span>Total Elaun Tidak Tetap</span><span id="elaunTidakTetapPreview">0.00</span></div>
+                                <div class="flex justify-between"><span>Total Kerja Lebih Masa(OT)</span><span id="overtimePreview">0.00</span></div>
+                                <div class="flex justify-between"><span>Total Tuntutan</span><span id="tuntutanPreview">0.00</span></div>
+                                <div class="flex justify-between"><span>Komisyen</span><span id="komisyenPreview">0.00</span></div>
+                                <div class="flex justify-between"><span>Bonus</span><span id="bonusPreview">0.00</span></div>
+                                <div class="flex justify-between font-bold border-t mt-2 pt-1"><span>Total</span><span id="totalPendapatanPreview">0.00</span></div>
+                            </div>
+                        </div>
+
+                        <div>
+                            <h3 class="font-bold underline mb-2">Penolakan:</h3>
+                            <div class="space-y-1">
+                                <div class="flex justify-between"><span>KWSP Pekerja</span><span id="kwspPekerjaPreview">0.00</span></div>
+                                <div class="flex justify-between"><span>PERKESO Pekerja</span><span id="perkesoPekerjaPreview">0.00</span></div>
+                                <div class="flex justify-between"><span>SIP Pekerja</span><span id="sipPekerjaPreview">0.00</span></div>
+                                <div class="flex justify-between"><span>Tidak Hadir/Cuti Tanpa Gaji</span><span id="unpaidLeavePreview">0.00</span></div>
+                                <div class="flex justify-between"><span>Pendahuluan</span><span id="pendahuluanPreview">0.00</span></div>
+                                <div class="flex justify-between"><span>Others (RM)</span><span id="othersPreview">0.00</span></div>
+                                <div class="flex justify-between font-bold text-red-600 border-t mt-2 pt-1"><span>Total</span><span>(<span id="totalPenolakanPreview">0.00</span>)</span></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <hr class="my-4">
+
+                    <div class="flex justify-between items-center bg-gray-100 p-3 rounded-lg font-bold text-lg">
+                        <span>Gaji Bersih</span>
+                        <span id="netPayPreview">0.00</span>
+                    </div>
+
+                    <hr class="my-4">
+
+                    <div class="grid grid-cols-2 gap-x-8 gap-y-2">
+                         <div><span class="font-semibold">KWSP Majikan:</span> <span id="kwspMajikanPreview"></span></div>
+                         <div><span class="font-semibold">PERKESO Majikan:</span> <span id="perkesoMajikanPreview"></span></div>
+                         <div><span class="font-semibold">SIP Majikan:</span> <span id="sipMajikanPreview"></span></div>
+                         <div><span class="font-semibold">PSMB Majikan:</span> <span id="psmbMajikanPreview"></span></div>
+
+                         <div class="col-span-2 my-2"></div> <div><span class="font-semibold">No. KWSP:</span> <span id="kwspNoPreview"></span></div>
+                         <div><span class="font-semibold">No. SIP:</span> <span id="sipNoPreview"></span></div>
+                         <div><span class="font-semibold">No. PERKESO:</span> <span id="perkesoNoPreview"></span></div>
+                         <div><span class="font-semibold">No. PSMB:</span> <span id="psmbNoPreview"></span></div>
                     </div>
 
                     <div class="border-t-2 border-gray-200 pt-6 mt-6 text-gray-600">
@@ -203,127 +227,156 @@ VISTA PERDANA COMMERCIAL CENTRE,
 
     <script>
         const { jsPDF } = window.jspdf;
-        let deductionsVisible = true;
 
-        const employeeNameInput = document.getElementById('employeeName');
-        const payPeriodInput = document.getElementById('payPeriod');
-        const payDateInput = document.getElementById('payDate');
-        const basicPayInput = document.getElementById('basicPay');
-        const overtimePayInput = document.getElementById('overtimePay');
+        // Input elements
+        const allInputs = {
+            payPeriod: document.getElementById('payPeriod'),
+            employeeName: document.getElementById('employeeName'),
+            nric: document.getElementById('nric'),
+            position: document.getElementById('position'),
+            gajiAsas: document.getElementById('gajiAsas'),
+            tunggakan: document.getElementById('tunggakan'),
+            elaunTetap: document.getElementById('elaunTetap'),
+            elaunTidakTetap: document.getElementById('elaunTidakTetap'),
+            overtime: document.getElementById('overtime'),
+            tuntutan: document.getElementById('tuntutan'),
+            komisyen: document.getElementById('komisyen'),
+            bonus: document.getElementById('bonus'),
+            kwspPekerja: document.getElementById('kwspPekerja'),
+            perkesoPekerja: document.getElementById('perkesoPekerja'),
+            sipPekerja: document.getElementById('sipPekerja'),
+            unpaidLeave: document.getElementById('unpaidLeave'),
+            pendahuluan: document.getElementById('pendahuluan'),
+            others: document.getElementById('others'),
+            kwspMajikan: document.getElementById('kwspMajikan'),
+            perkesoMajikan: document.getElementById('perkesoMajikan'),
+            sipMajikan: document.getElementById('sipMajikan'),
+            psmbMajikan: document.getElementById('psmbMajikan'),
+            kwspNo: document.getElementById('kwspNo'),
+            sipNo: document.getElementById('sipNo'),
+            perkesoNo: document.getElementById('perkesoNo'),
+            psmbNo: document.getElementById('psmbNo'),
+        };
+
+        // Preview elements
+        const allPreviews = {
+            payPeriod: document.getElementById('payPeriodPreview'),
+            employeeName: document.getElementById('employeeNamePreview'),
+            nric: document.getElementById('nricPreview'),
+            position: document.getElementById('positionPreview'),
+            gajiAsas: document.getElementById('gajiAsasPreview'),
+            tunggakan: document.getElementById('tunggakanPreview'),
+            elaunTetap: document.getElementById('elaunTetapPreview'),
+            elaunTidakTetap: document.getElementById('elaunTidakTetapPreview'),
+            overtime: document.getElementById('overtimePreview'),
+            tuntutan: document.getElementById('tuntutanPreview'),
+            komisyen: document.getElementById('komisyenPreview'),
+            bonus: document.getElementById('bonusPreview'),
+            totalPendapatan: document.getElementById('totalPendapatanPreview'),
+            kwspPekerja: document.getElementById('kwspPekerjaPreview'),
+            perkesoPekerja: document.getElementById('perkesoPekerjaPreview'),
+            sipPekerja: document.getElementById('sipPekerjaPreview'),
+            unpaidLeave: document.getElementById('unpaidLeavePreview'),
+            pendahuluan: document.getElementById('pendahuluanPreview'),
+            others: document.getElementById('othersPreview'),
+            totalPenolakan: document.getElementById('totalPenolakanPreview'),
+            netPay: document.getElementById('netPayPreview'),
+            kwspMajikan: document.getElementById('kwspMajikanPreview'),
+            perkesoMajikan: document.getElementById('perkesoMajikanPreview'),
+            sipMajikan: document.getElementById('sipMajikanPreview'),
+            psmbMajikan: document.getElementById('psmbMajikanPreview'),
+            kwspNo: document.getElementById('kwspNoPreview'),
+            sipNo: document.getElementById('sipNoPreview'),
+            perkesoNo: document.getElementById('perkesoNoPreview'),
+            psmbNo: document.getElementById('psmbNoPreview'),
+        };
+
         const generatePdfBtn = document.getElementById('generatePdf');
         const iosHelper = document.getElementById('ios-helper');
 
-        const employeeNamePreview = document.getElementById('employeeNamePreview');
-        const payPeriodPreview = document.getElementById('payPeriodPreview');
-        const payDatePreview = document.getElementById('payDatePreview');
-        const basicPayPreview = document.getElementById('basicPayPreview');
-        const overtimePayPreview = document.getElementById('overtimePayPreview');
-        const grossPayPreview = document.getElementById('grossPayPreview');
-        const totalDeductionsPreview = document.getElementById('totalDeductionsPreview');
-        const netPayPreview = document.getElementById('netPayPreview');
-        const deductionsTbodyPreview = document.getElementById('deductions-tbody-preview');
-        const deductionsSectionPreview = document.getElementById('deductions-section-preview');
-
-        const addDeductionBtn = document.getElementById('add-deduction');
-        const deductionsList = document.getElementById('deductions-list');
-        const toggleDeductionsBtn = document.getElementById('toggle-deductions');
-        const eyeOpenIcon = document.getElementById('eye-open');
-        const eyeClosedIcon = document.getElementById('eye-closed');
-
         function formatCurrency(amount) {
-            return `RM ${parseFloat(amount || 0).toFixed(2)}`;
-        }
-        
-        function formatDate(dateString) {
-            if (!dateString) return '';
-            const date = new Date(dateString);
-            const day = String(date.getUTCDate()).padStart(2, '0');
-            const month = String(date.getUTCMonth() + 1).padStart(2, '0');
-            const year = date.getUTCFullYear();
-            return `${day}/${month}/${year}`;
+            const number = parseFloat(amount) || 0;
+            return number.toLocaleString('en-US', {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            });
         }
 
         function updatePreview() {
-            employeeNamePreview.textContent = employeeNameInput.value || 'Employee Name';
-            payPeriodPreview.textContent = payPeriodInput.value || 'N/A';
-            payDatePreview.textContent = formatDate(payDateInput.value) || 'N/A';
-
-            const basicPay = parseFloat(basicPayInput.value) || 0;
-            const overtimePay = parseFloat(overtimePayInput.value) || 0;
-            const grossPay = basicPay + overtimePay;
-
-            basicPayPreview.textContent = formatCurrency(basicPay);
-            overtimePayPreview.textContent = formatCurrency(overtimePay);
-            grossPayPreview.textContent = formatCurrency(grossPay);
-
-            let totalDeductions = 0;
-            deductionsTbodyPreview.innerHTML = '';
-            const deductionRows = deductionsList.querySelectorAll('.deduction-row');
-            
-            deductionRows.forEach(row => {
-                const title = row.querySelector('.deduction-title').value || 'Untitled Deduction';
-                const amount = parseFloat(row.querySelector('.deduction-amount').value) || 0;
-                totalDeductions += amount;
-
-                const tr = document.createElement('tr');
-                tr.className = 'border-b border-gray-200';
-                tr.innerHTML = `<td class="p-3 text-sm">${title}</td><td class="text-right p-3 text-sm">${formatCurrency(amount)}</td>`;
-                deductionsTbodyPreview.appendChild(tr);
-            });
-
-            const netPay = grossPay - totalDeductions;
-            totalDeductionsPreview.textContent = formatCurrency(totalDeductions);
-            netPayPreview.textContent = formatCurrency(netPay);
-            
-            const hasDeductions = deductionRows.length > 0;
-            if (deductionsVisible && hasDeductions) {
-                deductionsSectionPreview.classList.remove('hidden');
-                totalDeductionsPreview.parentElement.classList.remove('hidden');
-            } else {
-                deductionsSectionPreview.classList.add('hidden');
-                totalDeductionsPreview.parentElement.classList.add('hidden');
+            // Get values from inputs, defaulting to 0 for numbers
+            const values = {};
+            for (const key in allInputs) {
+                if (allInputs[key].type === 'number') {
+                    values[key] = parseFloat(allInputs[key].value) || 0;
+                } else {
+                    values[key] = allInputs[key].value;
+                }
             }
-        }
-        
-        function addDeductionRow() {
-            const row = document.createElement('div');
-            row.className = 'deduction-row flex items-center gap-2';
-            row.innerHTML = `<input type="text" placeholder="Deduction Title" class="deduction-title mt-1 block w-full flex-grow bg-gray-50 border border-gray-300 rounded-lg shadow-sm py-2 px-3 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition duration-150"><input type="number" placeholder="0.00" step="0.01" class="deduction-amount mt-1 block w-28 bg-gray-50 border border-gray-300 rounded-lg shadow-sm py-2 px-3 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition duration-150"><button class="remove-deduction text-red-500 hover:text-red-700 opacity-25 transition-opacity"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-trash-2"><path d="M3 6h18"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><line x1="10" x2="10" y1="11" y2="17"/><line x1="14" x2="14" y1="11" y2="17"/></svg></button>`;
-            deductionsList.appendChild(row);
-            row.querySelector('.remove-deduction').addEventListener('click', () => {
-                row.remove();
-                updatePreview();
-            });
-            row.querySelectorAll('input').forEach(input => input.addEventListener('input', updatePreview));
-            updatePreview();
+
+            // Calculate totals
+            const totalPendapatan = values.gajiAsas + values.tunggakan + values.elaunTetap + values.elaunTidakTetap + values.overtime + values.tuntutan + values.komisyen + values.bonus;
+            const totalPenolakan = values.kwspPekerja + values.perkesoPekerja + values.sipPekerja + values.unpaidLeave + values.pendahuluan + values.others;
+            const netPay = totalPendapatan - totalPenolakan;
+
+            // Update text content for simple string previews
+            allPreviews.payPeriod.textContent = values.payPeriod || 'N/A';
+            allPreviews.employeeName.textContent = values.employeeName || 'N/A';
+            allPreviews.nric.textContent = values.nric || 'N/A';
+            allPreviews.position.textContent = values.position || 'N/A';
+            allPreviews.kwspNo.textContent = values.kwspNo || 'N/A';
+            allPreviews.sipNo.textContent = values.sipNo || 'N/A';
+            allPreviews.perkesoNo.textContent = values.perkesoNo || 'N/A';
+            allPreviews.psmbNo.textContent = values.psmbNo || 'N/A';
+
+            // Update text content for currency previews
+            allPreviews.gajiAsas.textContent = formatCurrency(values.gajiAsas);
+            allPreviews.tunggakan.textContent = formatCurrency(values.tunggakan);
+            allPreviews.elaunTetap.textContent = formatCurrency(values.elaunTetap);
+            allPreviews.elaunTidakTetap.textContent = formatCurrency(values.elaunTidakTetap);
+            allPreviews.overtime.textContent = formatCurrency(values.overtime);
+            allPreviews.tuntutan.textContent = formatCurrency(values.tuntutan);
+            allPreviews.komisyen.textContent = formatCurrency(values.komisyen);
+            allPreviews.bonus.textContent = formatCurrency(values.bonus);
+            allPreviews.totalPendapatan.textContent = formatCurrency(totalPendapatan);
+
+            allPreviews.kwspPekerja.textContent = formatCurrency(values.kwspPekerja);
+            allPreviews.perkesoPekerja.textContent = formatCurrency(values.perkesoPekerja);
+            allPreviews.sipPekerja.textContent = formatCurrency(values.sipPekerja);
+            allPreviews.unpaidLeave.textContent = formatCurrency(values.unpaidLeave);
+            allPreviews.pendahuluan.textContent = formatCurrency(values.pendahuluan);
+            allPreviews.others.textContent = formatCurrency(values.others);
+            allPreviews.totalPenolakan.textContent = formatCurrency(totalPenolakan);
+            
+            allPreviews.netPay.textContent = "RM " + formatCurrency(netPay);
+            
+            allPreviews.kwspMajikan.textContent = formatCurrency(values.kwspMajikan);
+            allPreviews.perkesoMajikan.textContent = formatCurrency(values.perkesoMajikan);
+            allPreviews.sipMajikan.textContent = formatCurrency(values.sipMajikan);
+            allPreviews.psmbMajikan.textContent = formatCurrency(values.psmbMajikan);
         }
 
         function isIOS() {
             return ['iPad Simulator', 'iPhone Simulator', 'iPod Simulator', 'iPad', 'iPhone', 'iPod'].includes(navigator.platform) || (navigator.userAgent.includes("Mac") && "ontouchend" in document);
         }
 
-        [employeeNameInput, payPeriodInput, payDateInput, basicPayInput, overtimePayInput].forEach(input => input.addEventListener('input', updatePreview));
-        addDeductionBtn.addEventListener('click', addDeductionRow);
-        toggleDeductionsBtn.addEventListener('click', () => {
-            deductionsVisible = !deductionsVisible;
-            eyeOpenIcon.classList.toggle('hidden');
-            eyeClosedIcon.classList.toggle('hidden');
-            updatePreview();
-        });
+        // Add event listeners to all input fields
+        for (const key in allInputs) {
+            allInputs[key].addEventListener('input', updatePreview);
+        }
         
         document.addEventListener('DOMContentLoaded', () => {
+            // Prefill pay period to current month and year
             const today = new Date();
-            const offset = today.getTimezoneOffset();
-            const localToday = new Date(today.getTime() - (offset*60*1000));
-            payDateInput.value = localToday.toISOString().split('T')[0];
             const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-            payPeriodInput.value = `${monthNames[today.getMonth()]} ${today.getFullYear()}`;
+            allInputs.payPeriod.value = `${monthNames[today.getMonth()]} ${today.getFullYear()}`;
+            
+            // Update the preview to reflect the initial state (empty form with current pay period)
             updatePreview();
         });
 
         generatePdfBtn.addEventListener('click', () => {
             iosHelper.classList.add('hidden');
-            updatePreview(); 
+            updatePreview();  
             
             const payslipElement = document.getElementById('payslip-container');
             const originalBtnText = generatePdfBtn.innerHTML;
@@ -331,14 +384,11 @@ VISTA PERDANA COMMERCIAL CENTRE,
             generatePdfBtn.disabled = true;
             generatePdfBtn.innerHTML = 'Exporting...';
             
-            // ==========================================================
-            // === THE FIX: Use fixed width for canvas generation ===
-            // ==========================================================
             const canvasOptions = { 
                 scale: 2, 
                 useCORS: true, 
-                width: 800,       // Force width to ensure full capture
-                windowWidth: 800  // Tell html2canvas the "window" is this wide
+                width: 800,
+                windowWidth: 800 
             };
 
             html2canvas(payslipElement, canvasOptions).then(canvas => {
@@ -356,7 +406,7 @@ VISTA PERDANA COMMERCIAL CENTRE,
 
                 const pdfBlob = pdf.output('blob');
                 const downloadLink = document.createElement('a');
-                const fileName = `Payslip-${employeeNameInput.value.replace(/\s/g, '_') || 'employee'}-${payPeriodInput.value.replace(/\s/g, '_') || 'period'}.pdf`;
+                const fileName = `Payslip-${allInputs.employeeName.value.replace(/\s/g, '_') || 'employee'}-${allInputs.payPeriod.value.replace(/\s/g, '_') || 'period'}.pdf`;
 
                 downloadLink.href = URL.createObjectURL(pdfBlob);
                 downloadLink.download = fileName;
